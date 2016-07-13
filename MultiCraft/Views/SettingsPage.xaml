@@ -1,0 +1,15 @@
+﻿<Page x:Class="MultiCraft.Views.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MultiCraft.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="750" d:DesignWidth="1200"
+      Title="SettingsPage">
+
+    <Grid Background="#7FA9E4EA">
+        <Button x:Name="HideButton" Content="Hide" Click="HideButton_OnClick" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="75" Margin="1125,0,0,0"/>
+
+    </Grid>
+</Page>

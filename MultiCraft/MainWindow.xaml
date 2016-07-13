@@ -1,12 +1,14 @@
-﻿<Window x:Class="MultiCraft.MainWindow"
+﻿<ui:Window x:Class="MultiCraft.MainWindow"
+        xmlns:ui="clr-namespace:Elysium.Controls;assembly=Elysium"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MultiCraft"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="MultiCraft" Height="750" Width="1210">
+    <Grid ClipToBounds="True">
+        <ContentControl x:Name="MainView" Panel.ZIndex="10"/>
+        <ContentControl x:Name="SettingsPage" Panel.ZIndex="999"/>
     </Grid>
-</Window>
+</ui:Window>
