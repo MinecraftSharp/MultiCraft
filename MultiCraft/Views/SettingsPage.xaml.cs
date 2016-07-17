@@ -7,6 +7,8 @@ namespace MultiCraft.Views
     /// </summary>
     public partial class SettingsPage
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(SettingsPage));
+
         private readonly MainView _view;
         public SettingsPage(MainView view)
         {
@@ -22,6 +24,7 @@ namespace MultiCraft.Views
                 mainWindow.SettingsPage.Visibility = Visibility.Hidden;
             //Remove the blur effect
             _view.MainGrid.Effect = null;
+            log.Debug("Settings Page hidden");
         }
     }
 }

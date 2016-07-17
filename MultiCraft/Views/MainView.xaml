@@ -10,11 +10,11 @@
       Title="MainView">
     <Grid x:Name="MainGrid">
         <Grid Background="#FFCCF1FF"  ZIndex="1">
-            <Image />
+            <Image x:Name="BackgroundImage" Stretch="UniformToFill"/>
         </Grid>
 
         <Grid Margin="0,0,855,0" x:Name="ModsGrid" ZIndex="10">
-            <ListBox x:Name="ModPackListing" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Height="625" VerticalAlignment="Top" Width="325" Margin="10,75,0,0"/>
+            <ListBox x:Name="ModPackListing" SelectionChanged="ModPackListing_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Height="625" VerticalAlignment="Top" Width="325" Margin="10,75,0,0"/>
             <ListBox x:Name="ModPackWebsites" SelectionChanged="ModPackWebsites_OnSelectionChanged" SelectionMode="Single" HorizontalAlignment="Left" Height="65" VerticalAlignment="Top" Width="325" Margin="10,5,0,0">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -40,7 +40,7 @@
                 <CheckBox x:Name="RememberPassword" Content="Save Password" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,100,6"/>
             </Grid>
             <Grid x:Name="AccountGrid" Margin="0,615,0,0" ZIndex="888">
-                <Button x:Name="LoginCurrent" Content="Login" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="160" Margin="0,0,170,45"/>
+                <Button x:Name="PlayCurrent" Content="Play" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="160" Margin="0,0,170,45"/>
                 <Button x:Name="AddAccount" Click="AddAccount_OnClick" Content="Add Account" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="160" Margin="0,0,170,10"/>
                 <Label x:Name="CurrentAccountName" Content="eddy5641" HorizontalContentAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Top" Width="320" Margin="0,0,10,0"/>
                 <Button x:Name="RemoveAccount" Content="Remove Account" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="160" Margin="0,0,10,10"/>

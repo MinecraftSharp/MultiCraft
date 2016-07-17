@@ -13,7 +13,7 @@
             </Image.Effect>
         </Image>
         <Label x:Name="ModpackName" HorizontalContentAlignment="Right" Content="" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,10,10,0" Background="#3F002F3A" FontWeight="Bold" Foreground="#CCFFFFFF"/>
-        <TextBox x:Name="ModpackDescription" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="105" Background="#3FFFFFFF" Margin="10,0,10,10"/>
+        <TextBox x:Name="ModpackDescription" IsReadOnly="True" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="105" Background="#3FFFFFFF" Margin="10,0,10,10"/>
 
     </Grid>
 </UserControl>
