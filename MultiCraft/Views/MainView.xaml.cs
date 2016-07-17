@@ -2,18 +2,15 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
-using System.Windows.Media.Imaging;
 using Framework.UI.Input;
 using MultiCraft.Account;
 using MultiCraft.Controls;
 using MultiCraft.Minecraft;
 using MultiCraft.ModPackHelpers.AtLauncher;
-using Newtonsoft.Json;
-using System.Net;
-using System.Collections.Generic;
+using System.Windows.Threading;
+using System.Threading;
 
 namespace MultiCraft.Views
 {
@@ -79,6 +76,7 @@ namespace MultiCraft.Views
                 ErrorMessage.Document.Blocks.Clear();
                 switch (result)
                 {
+                    //Get all results from login
                     case MinecraftAuth.MigratedAccount:
                         Info.Content = "Migrated Account";
                         ErrorMessage.AppendText("Your account is migrated. Please use your email.");
@@ -112,6 +110,7 @@ namespace MultiCraft.Views
                         ErrorMessage.AppendText("Something went wrong when trying to authenticate your account. Please try again.");
                         break;
                 }
+                //Cool way to show that the password was wrong
                 await DoShowInfoAnimation();
                 //Remove the password
                 Password.Password = string.Empty;
@@ -139,6 +138,7 @@ namespace MultiCraft.Views
         public async Task DoShowInfoAnimation()
         {
             //100, -55, 100, 0
+            //Moves a grid from the top of screen showing basic information
             var moveAnimation = new ThicknessAnimation(new Thickness(100, 10, 100, 0), TimeSpan.FromMilliseconds(500));
             MoveGrid.BeginAnimation(MarginProperty, moveAnimation);
             await Task.Delay(10000);
@@ -168,32 +168,33 @@ namespace MultiCraft.Views
             ModPackListing.Items.Clear();
             if (Equals(ModPackWebsites.SelectedItem, MultiCraft))
             {
-                ModPackListing.Items.Add(new ModPack("StopCraft", "This is a test",
-                    new Uri("pack://application:,,,/SamplePic/StopCraftSamplePic.png"),
-                    null, null, null, null));
+                //Adds a non-existant test modpack
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    ModPackListing.Items.Add(new ModPack("StopCraft", "This is a test",
+                        new Uri("pack://application:,,,/SamplePic/StopCraftSamplePic.png"),
+                        null, null, null, null));
+                }));
             }
             else if (Equals(ModPackWebsites.SelectedItem, ATLauncher))
             {
+                //Get all of the ATLauncher modpacks
                 var sortPacks = ATLauncherServers.GetPacks();
+                //Sort them the way ATLauncher wants them to be displayed
                 sortPacks.Sort((c1, c2) => c1.Position.CompareTo(c2.Position));
-
-                using (var client = new WebClient())
+                //There a a lot of modpacks, loading them this way should be faster
+                Parallel.ForEach(sortPacks, (pack) =>
                 {
-                    var domain = ATLauncherServers.GetBestServer();
-                    if (domain != "master.atlcdn.net")
-                        domain = $"{domain}/containers/atl";
-
-                    var hashes = JsonConvert.DeserializeObject<List<AtLauncherPacks>>(
-                        client.DownloadString($"http://{domain}/launcher/json/hashes.json"));
-
-                    foreach (var pack in sortPacks)
+                    //Eventually I will find the way that pack codes work, for now hide all private packs
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         if (pack.Type != AtLauncherType.Private)
                             ModPackListing.Items.Add(new ModPack(pack.Name, pack.Description,
-                                ATLauncherServers.GetImageFromPackName(pack.Name, hashes), pack.WebsiteURL, 
+                                ATLauncherServers.GetImageFromPackName(pack.Name), pack.WebsiteURL,
                                 pack.WebsiteURL, pack.WebsiteURL, pack.SupportURL));
-                    }
-                }
+
+                    }));
+                });
             }
             else if (Equals(ModPackWebsites.SelectedItem, FTBLauncher))
             {
@@ -205,13 +206,18 @@ namespace MultiCraft.Views
             }
             else if (Equals(ModPackWebsites.SelectedItem, Minecraft))
             {
-                ModPackListing.Items.Add(new ModPack("Vanilla Minecraft", "Play Minecraft the way Mojang made it. No mods are added in this version.",
-                    new Uri("pack://application:,,,/SamplePic/StopCraftSamplePic.png"),
-                    null, null, null, null));
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    //Planned for the future
+                    ModPackListing.Items.Add(new ModPack("Vanilla Minecraft", "Play Minecraft the way Mojang made it. No mods are added in this version.",
+                        new Uri("pack://application:,,,/SamplePic/StopCraftSamplePic.png"),
+                        null, null, null, null));
 
-                ModPackListing.Items.Add(new ModPack("FPScraft", "Play Minecraft the way Mojang made it. A few mods are added such as optifine to improve performance.",
-                    new Uri("pack://application:,,,/SamplePic/StopCraftSamplePic.png"),
-                    null, null, null, null));
+                    //Planned for the future
+                    ModPackListing.Items.Add(new ModPack("FPScraft", "Play Minecraft the way Mojang made it. A few mods are added such as optifine to improve performance.",
+                        new Uri("pack://application:,,,/SamplePic/StopCraftSamplePic.png"),
+                        null, null, null, null));
+                }));
             }
         }
     }
