@@ -9,7 +9,17 @@
       Title="SettingsPage">
 
     <Grid Background="#7FA9E4EA">
-        <Button x:Name="HideButton" Content="Hide" Click="HideButton_OnClick" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="75" Margin="1125,0,0,0"/>
-
+        <Button x:Name="HideButton" Content="Hide" Click="HideButton_OnClick" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="30" Background="#7FFF0000" Foreground="#CCE0E0E0" BorderBrush="Red"/>
+        <TabControl x:Name="SettingsTab" HorizontalAlignment="Center" Height="650" VerticalAlignment="Stretch" Width="1180" Margin="10,35,0,0">
+            <TabItem Header="MultiCraft Settings">
+                <Grid Background="#CCE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Launcher Settings">
+                <Grid Background="#CCE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Minecraft Settings">
+                <Grid Background="#CCE5E5E5"/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Page>

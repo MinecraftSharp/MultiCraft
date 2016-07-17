@@ -126,7 +126,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ModPackHelpers\AtLauncher\AtLauncherServers.cs" />
+    <Compile Include="Controls\ModPack.xaml.cs">
+      <DependentUpon>ModPack.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ModPackHelpers\AtLauncher\ATLauncherServers.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
@@ -178,6 +181,10 @@
     <Resource Include="MultiCraft.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\ModPack.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -205,6 +212,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="LauncherIcon\MultiCraft2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LauncherIcon\MinecraftIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="SamplePic\StopCraftSamplePic.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

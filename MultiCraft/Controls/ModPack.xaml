@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="MultiCraft.Controls.ModPack"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MultiCraft.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="300">
+    <Grid Width="300">
+        <Image x:Name="ModpackImage" Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Image.Effect>
+                <BlurEffect />
+            </Image.Effect>
+        </Image>
+        <Label x:Name="ModpackName" HorizontalContentAlignment="Right" Content="" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,10,10,0" Background="#3F002F3A" FontWeight="Bold" Foreground="#CCFFFFFF"/>
+        <TextBox x:Name="ModpackDescription" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="105" Background="#3FFFFFFF" Margin="10,0,10,10"/>
+
+    </Grid>
+</UserControl>

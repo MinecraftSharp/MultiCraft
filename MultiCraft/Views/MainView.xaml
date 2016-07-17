@@ -13,18 +13,19 @@
             <Image />
         </Grid>
 
-        <Grid Margin="0,0,895,0" x:Name="ModsGrid" ZIndex="10">
-            <ListBox x:Name="ModPackListing" HorizontalAlignment="Left" Height="680" VerticalAlignment="Bottom" Width="305" Margin="10,0,-10,0"/>
-            <ListBox x:Name="ModPackWebsites" HorizontalAlignment="Left" Height="65" VerticalAlignment="Top" Width="305" Margin="10,0,-10,0">
+        <Grid Margin="0,0,855,0" x:Name="ModsGrid" ZIndex="10">
+            <ListBox x:Name="ModPackListing" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Height="625" VerticalAlignment="Top" Width="325" Margin="10,75,0,0"/>
+            <ListBox x:Name="ModPackWebsites" SelectionChanged="ModPackWebsites_OnSelectionChanged" SelectionMode="Single" HorizontalAlignment="Left" Height="65" VerticalAlignment="Top" Width="325" Margin="10,5,0,0">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
-                <Image Tag="MultiCraft" Source="pack://application:,,,/LauncherIcon/MultiCraft2.png" Height="50" Width="50"/>
-                <Image Tag="ATLauncher" Source="pack://application:,,,/LauncherIcon/AtLauncher.png" Height="50" Width="50"/>
-                <Image Tag="FTBLauncher" Source="pack://application:,,,/LauncherIcon/FTBLauncher.png" Height="50" Width="50"/>
-                <Image Tag="TekkitLauncher" Source="pack://application:,,,/LauncherIcon/TekkitLauncher.png" Height="50" Width="50"/>
+                <Image x:Name="MultiCraft" Tag="MultiCraft" Source="pack://application:,,,/LauncherIcon/MultiCraft2.png" Height="50" Width="50"/>
+                <Image x:Name="ATLauncher" Tag="ATLauncher" Source="pack://application:,,,/LauncherIcon/AtLauncher.png" Height="50" Width="50"/>
+                <Image x:Name="FTBLauncher" Tag="FTBLauncher" Source="pack://application:,,,/LauncherIcon/FTBLauncher.png" Height="50" Width="50"/>
+                <Image x:Name="TekkitLauncher" Tag="TekkitLauncher" Source="pack://application:,,,/LauncherIcon/TekkitLauncher.png" Height="50" Width="50"/>
+                <Image x:Name="Minecraft" Tag="Minecraft" Source="pack://application:,,,/LauncherIcon/MinecraftIcon.png" Height="50" Width="50"/>
             </ListBox>
         </Grid>
 

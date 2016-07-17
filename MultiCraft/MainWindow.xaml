@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MultiCraft"
         mc:Ignorable="d"
-        Title="MultiCraft" Height="750" Width="1210">
+        Title="MultiCraft" Height="750" Width="1210" ResizeMode="CanMinimize">
     <Grid ClipToBounds="True">
         <ContentControl x:Name="MainView" Panel.ZIndex="10"/>
         <ContentControl x:Name="SettingsPage" Panel.ZIndex="999"/>

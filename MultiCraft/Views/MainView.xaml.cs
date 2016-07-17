@@ -2,11 +2,18 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
+using System.Windows.Media.Imaging;
 using Framework.UI.Input;
 using MultiCraft.Account;
+using MultiCraft.Controls;
 using MultiCraft.Minecraft;
+using MultiCraft.ModPackHelpers.AtLauncher;
+using Newtonsoft.Json;
+using System.Net;
+using System.Collections.Generic;
 
 namespace MultiCraft.Views
 {
@@ -34,6 +41,7 @@ namespace MultiCraft.Views
             _settingsPage.Visibility = Visibility.Hidden;
             //Make sure there is no blur effect 
             MainGrid.Effect = null;
+            ModPackWebsites.SelectedItem = MultiCraft;
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
@@ -61,7 +69,7 @@ namespace MultiCraft.Views
             LoginGrid.Visibility = Visibility.Visible;
         }
 
-        private void Login_OnClick(object sender, RoutedEventArgs e)
+        private async void Login_OnClick(object sender, RoutedEventArgs e)
         {
             //login
             var login = new MinecraftLogin();
@@ -104,7 +112,7 @@ namespace MultiCraft.Views
                         ErrorMessage.AppendText("Something went wrong when trying to authenticate your account. Please try again.");
                         break;
                 }
-                DoShowInfoAnimation();
+                await DoShowInfoAnimation();
                 //Remove the password
                 Password.Password = string.Empty;
                 return;
@@ -153,6 +161,58 @@ namespace MultiCraft.Views
 
             //Shows the settings page
             _settingsPage.Visibility = Visibility.Visible;
+        }
+
+        private void ModPackWebsites_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ModPackListing.Items.Clear();
+            if (Equals(ModPackWebsites.SelectedItem, MultiCraft))
+            {
+                ModPackListing.Items.Add(new ModPack("StopCraft", "This is a test",
+                    new Uri("pack://application:,,,/SamplePic/StopCraftSamplePic.png"),
+                    null, null, null, null));
+            }
+            else if (Equals(ModPackWebsites.SelectedItem, ATLauncher))
+            {
+                var sortPacks = ATLauncherServers.GetPacks();
+                sortPacks.Sort((c1, c2) => c1.Position.CompareTo(c2.Position));
+
+                using (var client = new WebClient())
+                {
+                    var domain = ATLauncherServers.GetBestServer();
+                    if (domain != "master.atlcdn.net")
+                        domain = $"{domain}/containers/atl";
+
+                    var hashes = JsonConvert.DeserializeObject<List<AtLauncherPacks>>(
+                        client.DownloadString($"http://{domain}/launcher/json/hashes.json"));
+
+                    foreach (var pack in sortPacks)
+                    {
+                        if (pack.Type != AtLauncherType.Private)
+                            ModPackListing.Items.Add(new ModPack(pack.Name, pack.Description,
+                                ATLauncherServers.GetImageFromPackName(pack.Name, hashes), pack.WebsiteURL, 
+                                pack.WebsiteURL, pack.WebsiteURL, pack.SupportURL));
+                    }
+                }
+            }
+            else if (Equals(ModPackWebsites.SelectedItem, FTBLauncher))
+            {
+
+            }
+            else if (Equals(ModPackWebsites.SelectedItem, TekkitLauncher))
+            {
+
+            }
+            else if (Equals(ModPackWebsites.SelectedItem, Minecraft))
+            {
+                ModPackListing.Items.Add(new ModPack("Vanilla Minecraft", "Play Minecraft the way Mojang made it. No mods are added in this version.",
+                    new Uri("pack://application:,,,/SamplePic/StopCraftSamplePic.png"),
+                    null, null, null, null));
+
+                ModPackListing.Items.Add(new ModPack("FPScraft", "Play Minecraft the way Mojang made it. A few mods are added such as optifine to improve performance.",
+                    new Uri("pack://application:,,,/SamplePic/StopCraftSamplePic.png"),
+                    null, null, null, null));
+            }
         }
     }
 }
