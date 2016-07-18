@@ -17,7 +17,7 @@ namespace MultiCraft
 
         public MainWindow()
         {
-            DOMConfigurator.Configure();
+            XmlConfigurator.Configure();
             //Idk why this doesn't work but it is here for ui
             Application.Current.Resources.Add(new ResourceDictionary { Source = new Uri("pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Blue.xaml") }, null);
             Application.Current.Resources.Add(new ResourceDictionary { Source = new Uri("pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml") }, null);

@@ -16,6 +16,7 @@ namespace MultiCraft.ModPackHelpers.AtLauncher
 {
     public static class ATLauncherServers
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(ATLauncherServers));
         public static string GetBestServer()
         {
             try
@@ -33,13 +34,14 @@ namespace MultiCraft.ModPackHelpers.AtLauncher
                     IList<PingReply> successPings = tasks.Where(pings => pings.Status == IPStatus.Success).ToList();
                     //Return the fastest ping, this is an IP Address
                     var ipaddress = successPings.Where(ping => ping.RoundtripTime == successPings.Min(pings => pings.RoundtripTime)).ToList()[0].Address.ToString();
-                    
+                    log.Debug("Retrieved best server IP successfully");
                     return json.Where(x => x.IPAddress == ipaddress).First().BaseURL;
-
+                    
                 }
             }
-            catch
+            catch (Exception e)
             {
+                log.Debug($"Failed to retrieve best server : {e.Message}");
                 //if something goes wrong just use this instead
                 return "master.atlcdn.net";
             }
@@ -161,10 +163,7 @@ namespace MultiCraft.ModPackHelpers.AtLauncher
         [JsonProperty("isMaster")]
         public bool IsMaster { get; set; }
 
-        public string IPAddress { get
-            {
-                return Dns.GetHostAddresses(BaseURL)[0].ToString();
-            } }
+        public string IPAddress => Dns.GetHostAddresses(BaseURL.Split('/')[0].Split(':')[0])[0].ToString();
     }
 
     #region AtLauncherPacksJson

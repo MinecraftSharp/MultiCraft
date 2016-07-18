@@ -14,7 +14,7 @@
         </Grid>
 
         <Grid Margin="0,0,855,0" x:Name="ModsGrid" ZIndex="10">
-            <ListBox x:Name="ModPackListing" SelectionChanged="ModPackListing_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Height="625" VerticalAlignment="Top" Width="325" Margin="10,75,0,0"/>
+            <ListBox x:Name="ModPackListing" SelectionChanged="ModPackListing_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Height="596" VerticalAlignment="Top" Width="325" Margin="10,104,0,0"/>
             <ListBox x:Name="ModPackWebsites" SelectionChanged="ModPackWebsites_OnSelectionChanged" SelectionMode="Single" HorizontalAlignment="Left" Height="65" VerticalAlignment="Top" Width="325" Margin="10,5,0,0">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -27,12 +27,13 @@
                 <Image x:Name="TekkitLauncher" Tag="TekkitLauncher" Source="pack://application:,,,/LauncherIcon/TekkitLauncher.png" Height="50" Width="50"/>
                 <Image x:Name="Minecraft" Tag="Minecraft" Source="pack://application:,,,/LauncherIcon/MinecraftIcon.png" Height="50" Width="50"/>
             </ListBox>
+            <controls:ButtonTextBox x:Name="SearchText" Watermark="Find modpack" TextChanged="SearchText_TextChanged" VerticalAlignment="Top" Content="x" HorizontalAlignment="Left" Height="23" Margin="10,76,0,0" Width="325"/>
         </Grid>
 
         <Grid Margin="850,0,0,0" Width="340" HorizontalAlignment="Right" ZIndex="888" >
             <Image x:Name="AccoungPicture"  HorizontalAlignment="right" Height="560" VerticalAlignment="Top" Width="340" Margin="0,50,0,0" />
             <Grid x:Name="LoginGrid" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="100" Visibility="Hidden" ZIndex="888">
-                <controls:ButtonTextBox x:Name="Username" Watermark="Username" Content="x"  HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" Text=""  VerticalAlignment="Bottom" Width="330" Margin="0,0,10,67"/>
+                <controls:ButtonTextBox x:Name="Username" Watermark="Username" Content="x" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Bottom" Width="330" Margin="0,0,10,67"/>
                 <PasswordBox x:Name="Password" PasswordChanged="PasswordBox_PasswordChanged" GotFocus="Password_Focus" LostFocus="Password_Focus" Height="23" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="330" Margin="0,0,10,39"/>
                 <Label x:Name="PasswordLabel" Content="Password" HorizontalAlignment="Left" Margin="-46,0,0,40" VerticalAlignment="Bottom" Foreground="#FFC5C2C2" IsHitTestVisible="False" Width="99" RenderTransformOrigin="0.343,0.52"/>
                 <Button x:Name="Login" Click="Login_OnClick" Content="Login" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="75" Margin="0,0,10,5"/>

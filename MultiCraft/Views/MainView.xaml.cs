@@ -13,6 +13,7 @@ using System.Windows.Threading;
 using System.Threading;
 using System.Collections.Generic;
 using System.Windows.Media;
+using System.Linq;
 
 namespace MultiCraft.Views
 {
@@ -32,7 +33,8 @@ namespace MultiCraft.Views
         {
             InitializeComponent();
             //Makes it so that we can clear the username using one button
-            Username.Command = Clear;
+            Username.Command = ClearUsername;
+            SearchText.Command = SearchClear;
 
             //Set up the settings page
             _settingsPage = settingsPage;
@@ -159,11 +161,18 @@ namespace MultiCraft.Views
         }
 
         //Handles clearing the text
-        public DelegateCommand Clear => new DelegateCommand(ClearText);
+        public DelegateCommand ClearUsername => new DelegateCommand(ClearUsernameText);
 
-        public void ClearText()
+        public void ClearUsernameText()
         {
             Username.Text = string.Empty;
+        }
+
+        public DelegateCommand SearchClear => new DelegateCommand(SearchEmpty);
+
+        public void SearchEmpty()
+        {
+            SearchText.Text = string.Empty;
         }
 
         private void SettingsButton_OnClick(object sender, RoutedEventArgs e)
@@ -209,13 +218,12 @@ namespace MultiCraft.Views
                 //There a a lot of modpacks, loading them this way should be faster
                 Parallel.ForEach(sortPacks, (pack) =>
                 {
-                    //Eventually I will find the way that pack codes work, for now hide all private packs
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
-                        if (pack.Type != AtLauncherType.Private)
-                            ModPackListing.Items.Add(new ModPack(pack.Name, pack.Description,
-                                ATLauncherServers.GetImageFromPackName(pack.Name), pack.WebsiteURL,
-                                pack.WebsiteURL, pack.WebsiteURL, pack.SupportURL));
+                        //I don't care if it is public or private, all should be shown for users
+                        ModPackListing.Items.Add(new ModPack(pack.Name, pack.Description,
+                            ATLauncherServers.GetImageFromPackName(pack.Name), pack.WebsiteURL,
+                            pack.WebsiteURL, pack.WebsiteURL, pack.SupportURL));
                     }));
                 });
                 //Allow you to switch packs again
@@ -268,6 +276,18 @@ namespace MultiCraft.Views
                 var modPack = (ModPack)ModPackListing.SelectedItem;
                 BackgroundImage.Source = modPack.ModpackImage.Source;
             }
+        }
+
+        private void SearchText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ModPackListing.Items.Filter = (o) =>
+            {
+                if (((ModPack)o).ModpackName.Content.ToString().ToLower().Contains(SearchText.Text.ToLower()))
+                    return true;
+                else if (string.IsNullOrWhiteSpace(SearchText.Text))
+                    return true;
+                return false;
+            };
         }
     }
 }
