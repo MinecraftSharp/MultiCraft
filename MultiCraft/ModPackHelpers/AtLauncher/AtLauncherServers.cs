@@ -5,18 +5,17 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
 
-namespace MultiCraft.ModPackHelpers.AtLauncher
+namespace MultiCraft.ModPackHelpers.ATLauncher
 {
     public static class ATLauncherServers
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(ATLauncherServers));
+        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(typeof(ATLauncherServers));
         public static string GetBestServer()
         {
             try
@@ -34,14 +33,14 @@ namespace MultiCraft.ModPackHelpers.AtLauncher
                     IList<PingReply> successPings = tasks.Where(pings => pings.Status == IPStatus.Success).ToList();
                     //Return the fastest ping, this is an IP Address
                     var ipaddress = successPings.Where(ping => ping.RoundtripTime == successPings.Min(pings => pings.RoundtripTime)).ToList()[0].Address.ToString();
-                    log.Debug("Retrieved best server IP successfully");
-                    return json.Where(x => x.IPAddress == ipaddress).First().BaseURL;
+                    Log.Debug("Retrieved best server IP successfully");
+                    return json.First(x => x.IPAddress == ipaddress).BaseURL;
                     
                 }
             }
             catch (Exception e)
             {
-                log.Debug($"Failed to retrieve best server : {e.Message}");
+                Log.Debug($"Failed to retrieve best server : {e.Message}");
                 //if something goes wrong just use this instead
                 return "master.atlcdn.net";
             }
@@ -65,19 +64,17 @@ namespace MultiCraft.ModPackHelpers.AtLauncher
 
         public static Uri GetImageFromPackName(string packName)
         {
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            if (path == null)
+                return null;
             //helps with getting the picture
-            var savePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ATLauncher", "Images");
+            var savePath = Path.Combine(path, "ATLauncher", "Images");
             //Check if the file exists
-            if (File.Exists(Path.Combine(savePath, $"{packName.ToLower().ImageNameClean()}.png")))
-            {
-                //File exists, return uri to it
-                return new Uri(Path.Combine(savePath, $"{packName.ToLower().ImageNameClean()}.png"));
-            }
+            return File.Exists(Path.Combine(savePath, $"{packName.ToLower().ImageNameClean()}.png")) ? new Uri(Path.Combine(savePath, $"{packName.ToLower().ImageNameClean()}.png")) : null;
             //File does not exist, use the multicraft stopcraft picture
-            return null;
         }
 
-        public static async Task<bool> DownloadAllFiles()
+        public static bool DownloadAllFiles()
         {
             try
             {
@@ -86,39 +83,41 @@ namespace MultiCraft.ModPackHelpers.AtLauncher
                 //Download the hashes json
                 var files = JsonConvert.DeserializeObject<List<ATLauncherHashes>>(client.DownloadString($"http://{domain}/launcher/json/hashes.json"));
                 client.Dispose();
+                //Ensure the path location exists
+                var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                if (path == null)
+                    return false;
                 //Ensure that the directories exist
-                var MasterPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ATLauncher");
-                if (!Directory.Exists(MasterPath))
-                    Directory.CreateDirectory(MasterPath);
+                var masterPath = Path.Combine(path, "ATLauncher");
+                if (!Directory.Exists(masterPath))
+                    Directory.CreateDirectory(masterPath);
 
                 //Use Parallel because there are a lot of files
                 Parallel.ForEach(files, (file) =>
                 {
                     //Ensure directory exists
-                    if (!Directory.Exists(Path.Combine(MasterPath, file.Folder)))
+                    if (!Directory.Exists(Path.Combine(masterPath, file.Folder)))
                     {
-                        Directory.CreateDirectory(Path.Combine(MasterPath, file.Folder));
+                        Directory.CreateDirectory(Path.Combine(masterPath, file.Folder));
                     }
                     //Do not do pointless stuff
                     if (file.Name == "Launcher")
                         return;
                     //check if file exists
-                    if (File.Exists(Path.Combine(MasterPath, file.Folder, file.Name)))
+                    if (File.Exists(Path.Combine(masterPath, file.Folder, file.Name)))
                     {
                         //Files exits check MD5 hash
                         using (var md5 = MD5.Create())
                         {
-                            using (var stream = File.OpenRead(Path.Combine(MasterPath, file.Folder, file.Name)))
+                            using (var stream = File.OpenRead(Path.Combine(masterPath, file.Folder, file.Name)))
                             {
                                 //MD5 hash different, override the old file
-                                if (file.MD5 != Encoding.Default.GetString(md5.ComputeHash(stream)))
+                                if (file.MD5 == Encoding.Default.GetString(md5.ComputeHash(stream))) return;
+                                stream.Dispose();
+                                File.Delete(Path.Combine(masterPath, file.Folder, file.Name));
+                                using (var downloadClient = new WebClient())
                                 {
-                                    stream.Dispose();
-                                    File.Delete(Path.Combine(MasterPath, file.Folder, file.Name));
-                                    using (var downloadClient = new WebClient())
-                                    {
-                                        downloadClient.DownloadFile($"http://{domain}/launcher/{file.Folder.ToLower()}/{file.Name}", Path.Combine(MasterPath, file.Folder, file.Name));
-                                    }
+                                    downloadClient.DownloadFile($"http://{domain}/launcher/{file.Folder.ToLower()}/{file.Name}", Path.Combine(masterPath, file.Folder, file.Name));
                                 }
                             }
                         }
@@ -128,7 +127,7 @@ namespace MultiCraft.ModPackHelpers.AtLauncher
                         //file does not exist, download it
                         using (var downloadClient = new WebClient())
                         {
-                            downloadClient.DownloadFile($"http://{domain}/launcher/{file.Folder.ToLower()}/{file.Name}", Path.Combine(MasterPath, file.Folder, file.Name));
+                            downloadClient.DownloadFile($"http://{domain}/launcher/{file.Folder.ToLower()}/{file.Name}", Path.Combine(masterPath, file.Folder, file.Name));
                         }
                     }
                 });

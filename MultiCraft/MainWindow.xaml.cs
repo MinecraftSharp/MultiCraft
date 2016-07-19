@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows;
-using MultiCraft.ModPackHelpers.AtLauncher;
+using MultiCraft.ModPackHelpers.ATLauncher;
 using MultiCraft.Views;
 using System.Threading.Tasks;
 using System.Threading;
@@ -13,7 +13,7 @@ namespace MultiCraft
     /// </summary>
     public partial class MainWindow
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(MainWindow));
+        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(typeof(MainWindow));
 
         public MainWindow()
         {
@@ -25,16 +25,16 @@ namespace MultiCraft
             //Prepare for modpacks
             var x = ATLauncherServers.DownloadAllFiles();
             Task.WaitAll(x);
-            log.Debug("All launcher files installed");
+            Log.Debug("All launcher files installed");
             InitializeComponent();
             //This allows me to set up views without another class just to hold the settings page
             MainView.Content = new MainView(SettingsPage).Content;
-            log.Debug("Switching to MainView");
+            Log.Debug("Switching to MainView");
 
             //I am crazy
             ThreadPool.SetMinThreads(50, 50);
             ThreadPool.SetMaxThreads(1000, 1000);
-            log.Debug("Set ThreadPool");
+            Log.Debug("Set ThreadPool");
         }
 
         private void MenuItemLabelHide_Click(object sender, RoutedEventArgs e)
@@ -45,7 +45,7 @@ namespace MultiCraft
                 Visibility = Visibility.Visible;
                 Show();
                 ShowInTaskbar = true;
-                log.Debug("Window shown");
+                Log.Debug("Window shown");
             }
             else
             {
@@ -53,14 +53,14 @@ namespace MultiCraft
                 Visibility = Visibility.Hidden;
                 Hide();
                 ShowInTaskbar = false;
-                log.Debug("Window hidden");
+                Log.Debug("Window hidden");
             }
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             Close();
-            log.Debug("User closed window though menu");
+            Log.Debug("User closed window though menu");
             Environment.Exit(0);
         }
     }

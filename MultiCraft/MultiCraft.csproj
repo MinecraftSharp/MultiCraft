@@ -133,8 +133,9 @@
     <Compile Include="Controls\ModPack.xaml.cs">
       <DependentUpon>ModPack.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ModPackHelpers\AtLauncher\ATLauncherModpackDownload.cs" />
-    <Compile Include="ModPackHelpers\AtLauncher\ATLauncherServers.cs" />
+    <Compile Include="ModPackHelpers\ATLauncher\ATLauncherModpackDownload.cs" />
+    <Compile Include="ModPackHelpers\ATLauncher\ATLauncherServers.cs" />
+    <Compile Include="ModPackHelpers\FTBLauncher\FTBLauncherServer.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
@@ -182,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Minecraft\Skin\" />
+    <Folder Include="ModPackHelpers\TekkitLauncher\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="MultiCraft.ico" />
